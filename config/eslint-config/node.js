@@ -1,7 +1,7 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   extends: [
-    '@rocketseat/eslint-config/next'
+    '@rocketseat/eslint-config/node'
   ],
   plugins: [
     'simple-import-sort'
