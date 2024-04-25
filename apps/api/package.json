@@ -17,10 +17,14 @@
     "@acl/eslint-config": "workspace:*",
     "@acl/prettier": "workspace:*",
     "@acl/tsconfig": "workspace:*",
+    "@faker-js/faker": "^8.4.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.12.7",
     "prisma": "^5.13.0",
     "tsx": "^4.7.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "prettier": "@acl/prettier",
   "eslintConfig": {
