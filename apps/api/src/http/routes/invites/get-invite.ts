@@ -19,21 +19,23 @@ export async function getInvite(app: FastifyInstance) {
         }),
         response: {
           200: z.object({
-            id: z.string().uuid(),
-            email: z.string().email(),
-            role: roleSchema,
-            createdAt: z.date(),
             invite: z.object({
-              organization: z.object({
-                name: z.string(),
+              id: z.string().uuid(),
+              email: z.string().email(),
+              role: roleSchema,
+              createdAt: z.date(),
+              invite: z.object({
+                organization: z.object({
+                  name: z.string(),
+                }),
+                author: z
+                  .object({
+                    id: z.string().uuid(),
+                    name: z.string().nullable(),
+                    avatarUrl: z.string().nullable(),
+                  })
+                  .nullable(),
               }),
-              author: z
-                .object({
-                  id: z.string().uuid(),
-                  name: z.string().nullable(),
-                  avatarUrl: z.string().nullable(),
-                })
-                .nullable(),
             }),
           }),
         },
