@@ -81,6 +81,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@acl/env':
+        specifier: workspace:*
+        version: link:../../packages/env
       '@radix-ui/react-label':
         specifier: ^2.0.2
         version: 2.0.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522))(react@19.0.0-rc-f994737d14-20240522)
@@ -142,6 +145,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.0
+      dotenv-cli:
+        specifier: ^7.4.1
+        version: 7.4.1
       postcss:
         specifier: ^8
         version: 8.4.38

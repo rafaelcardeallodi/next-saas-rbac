@@ -3,17 +3,16 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-
-import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function authenticateWithGithub(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/sessions/github',
     {
       schema: {
-        tags: ['auth'],
-        summary: 'Authenticate with Github',
+        tags: ['Auth'],
+        summary: 'Authenticate with GitHub',
         body: z.object({
           code: z.string(),
         }),
@@ -27,22 +26,22 @@ export async function authenticateWithGithub(app: FastifyInstance) {
     async (request, reply) => {
       const { code } = request.body
 
-      const githubOAuthUrl = new URL(
+      const githubOAuthURL = new URL(
         'https://github.com/login/oauth/access_token',
       )
 
-      githubOAuthUrl.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID)
-      githubOAuthUrl.searchParams.set(
+      githubOAuthURL.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID)
+      githubOAuthURL.searchParams.set(
         'client_secret',
         env.GITHUB_OAUTH_CLIENT_SECRET,
       )
-      githubOAuthUrl.searchParams.set(
+      githubOAuthURL.searchParams.set(
         'redirect_uri',
-        env.GITHUB_OAUTH_CLIENT_SECRET,
+        env.GITHUB_OAUTH_REDIRECT_URI,
       )
-      githubOAuthUrl.searchParams.set('code', code)
+      githubOAuthURL.searchParams.set('code', code)
 
-      const githubAccessTokenResponse = await fetch(githubOAuthUrl, {
+      const githubAccessTokenResponse = await fetch(githubOAuthURL, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -75,15 +74,15 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       } = z
         .object({
           id: z.number().int().transform(String),
-          name: z.string().nullable(),
-          email: z.string().email(),
           avatar_url: z.string().url(),
+          name: z.string().nullable(),
+          email: z.string().nullable(),
         })
         .parse(githubUserData)
 
       if (email === null) {
         throw new BadRequestError(
-          'Your Github account must have an e-mail to authenticate.',
+          'Your GitHub account must have an email to authenticate.',
         )
       }
 

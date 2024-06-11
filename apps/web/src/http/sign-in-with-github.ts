@@ -7,6 +7,7 @@ interface SignInWithGithubRequest {
 interface SignInWithGithubResponse {
   token: string
 }
+
 export async function signInWithGithub({ code }: SignInWithGithubRequest) {
   const result = await api
     .post('sessions/github', {
