@@ -81,6 +81,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@acl/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@acl/env':
         specifier: workspace:*
         version: link:../../packages/env
