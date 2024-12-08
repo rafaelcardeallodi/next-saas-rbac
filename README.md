@@ -8,7 +8,7 @@ This project contains all the necessary boilerplate to setup a multi-tenant SaaS
 
 - [x] It should be able to authenticate using e-mail & password;
 - [x] It should be able to authenticate using Github account;
-- [ ] It should be able to recover password using e-mail;
+- [x] It should be able to recover password using e-mail;
 - [x] It should be able to create an account (e-mail, name and password);
 
 ### Organizations
@@ -21,14 +21,14 @@ This project contains all the necessary boilerplate to setup a multi-tenant SaaS
 
 ### Invites
 
-- [ ] It should be able to invite a new member (e-mail, role);
-- [ ] It should be able to accept an invite;
-- [ ] It should be able to revoke a pending invite;
+- [x] It should be able to invite a new member (e-mail, role);
+- [x] It should be able to accept an invite;
+- [x] It should be able to revoke a pending invite;
 
 ### Members
 
-- [ ] It should be able to get organization members;
-- [ ] It should be able to update a member role;
+- [x] It should be able to get organization members;
+- [x] It should be able to update a member role;
 
 ### Projects
 
@@ -39,7 +39,7 @@ This project contains all the necessary boilerplate to setup a multi-tenant SaaS
 
 ### Billing
 
-- [ ] It should be able to get billing details for organization ($20 per project / $10 per member excluding billing role);
+- [x] It should be able to get billing details for organization ($20 per project / $10 per member excluding billing role);
 
 ## RBAC
 

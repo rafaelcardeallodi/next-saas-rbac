@@ -47,6 +47,10 @@ export function PendingInvites() {
           Pending invites ({data?.invites.length ?? 0})
         </span>
 
+        {data?.invites.length === 0 && (
+          <p className="text-sm text-muted-foreground">No invites found</p>
+        )}
+
         {data?.invites.map((invite) => {
           return (
             <div key={invite.id} className="space-y-2">
