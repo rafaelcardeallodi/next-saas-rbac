@@ -3,16 +3,15 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-
-import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function getInvite(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
     '/invites/:inviteId',
     {
       schema: {
-        tags: ['invites'],
+        tags: ['Invites'],
         summary: 'Get an invite',
         params: z.object({
           inviteId: z.string().uuid(),
@@ -21,21 +20,19 @@ export async function getInvite(app: FastifyInstance) {
           200: z.object({
             invite: z.object({
               id: z.string().uuid(),
-              email: z.string().email(),
               role: roleSchema,
+              email: z.string().email(),
               createdAt: z.date(),
-              invite: z.object({
-                organization: z.object({
-                  name: z.string(),
-                }),
-                author: z
-                  .object({
-                    id: z.string().uuid(),
-                    name: z.string().nullable(),
-                    avatarUrl: z.string().nullable(),
-                  })
-                  .nullable(),
+              organization: z.object({
+                name: z.string(),
               }),
+              author: z
+                .object({
+                  id: z.string().uuid(),
+                  name: z.string().nullable(),
+                  avatarUrl: z.string().url().nullable(),
+                })
+                .nullable(),
             }),
           }),
         },
@@ -45,6 +42,9 @@ export async function getInvite(app: FastifyInstance) {
       const { inviteId } = request.params
 
       const invite = await prisma.invite.findUnique({
+        where: {
+          id: inviteId,
+        },
         select: {
           id: true,
           email: true,
@@ -62,9 +62,6 @@ export async function getInvite(app: FastifyInstance) {
               name: true,
             },
           },
-        },
-        where: {
-          id: inviteId,
         },
       })
 
