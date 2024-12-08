@@ -1,5 +1,5 @@
 import { organizationSchema } from '@acl/auth'
-import { ArrowLeftRight, Crown } from 'lucide-react'
+import { ArrowLeftRight, Crown, UserMinus } from 'lucide-react'
 import Image from 'next/image'
 
 import { ability, getCurrentOrg } from '@/auth/auth'
@@ -9,6 +9,8 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { getMembers } from '@/http/get-members'
 import { getMembership } from '@/http/get-membership'
 import { getOrganization } from '@/http/get-organization'
+
+import { removeMemberAction } from './actions'
 
 export async function MemberList() {
   const currentOrg = getCurrentOrg()
@@ -26,6 +28,7 @@ export async function MemberList() {
     'transfer_ownership',
     authOrganization,
   )
+  const canRemoveMembers = permissions?.can('delete', 'User')
 
   return (
     <div className="space-y-2">
@@ -75,6 +78,22 @@ export async function MemberList() {
                           <ArrowLeftRight className="mr-2 size-4" />
                           Transfer ownership
                         </Button>
+                      )}
+                      {canRemoveMembers && (
+                        <form action={removeMemberAction.bind(null, member.id)}>
+                          <Button
+                            type="submit"
+                            size="sm"
+                            variant="destructive"
+                            disabled={
+                              member.userId === membership.userId ||
+                              organization.ownerId === member.userId
+                            }
+                          >
+                            <UserMinus className="mr-2 size-4" />
+                            Remove
+                          </Button>
+                        </form>
                       )}
                     </div>
                   </TableCell>
