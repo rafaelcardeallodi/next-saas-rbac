@@ -10,7 +10,13 @@ interface GetOrganizationsResponse {
 }
 
 export async function getOrganizations() {
-  const result = await api.get('organizations').json<GetOrganizationsResponse>()
+  const result = await api
+    .get('organizations', {
+      next: {
+        tags: ['organization'],
+      },
+    })
+    .json<GetOrganizationsResponse>()
 
   return result
 }
