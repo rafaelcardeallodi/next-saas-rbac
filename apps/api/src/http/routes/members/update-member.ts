@@ -4,20 +4,19 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { auth } from '@/http/middlewares/auth'
+import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils/get-user-permissions'
-
-import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export async function updateMember(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .put(
-      '/organizations/:slug/member/:memberId',
+      '/organizations/:slug/members/:memberId',
       {
         schema: {
-          tags: ['members'],
+          tags: ['Members'],
           summary: 'Update a member',
           security: [{ bearerAuth: [] }],
           params: z.object({
@@ -35,7 +34,7 @@ export async function updateMember(app: FastifyInstance) {
       async (request, reply) => {
         const { slug, memberId } = request.params
         const userId = await request.getCurrentUserId()
-        const { membership, organization } =
+        const { organization, membership } =
           await request.getUserMembership(slug)
 
         const { cannot } = getUserPermissions(userId, membership.role)

@@ -11,6 +11,7 @@ import { getMembership } from '@/http/get-membership'
 import { getOrganization } from '@/http/get-organization'
 
 import { removeMemberAction } from './actions'
+import { UpdateMemberRoleSelect } from './update-member-role-select'
 
 export async function MemberList() {
   const currentOrg = getCurrentOrg()
@@ -29,6 +30,7 @@ export async function MemberList() {
     authOrganization,
   )
   const canRemoveMembers = permissions?.can('delete', 'User')
+  const cannotUpdateMemberRole = permissions?.cannot('update', 'User')
 
   return (
     <div className="space-y-2">
@@ -79,6 +81,17 @@ export async function MemberList() {
                           Transfer ownership
                         </Button>
                       )}
+
+                      <UpdateMemberRoleSelect
+                        memberId={member.id}
+                        value={member.role}
+                        disabled={
+                          member.userId === membership.userId ||
+                          organization.ownerId === member.userId ||
+                          cannotUpdateMemberRole
+                        }
+                      />
+
                       {canRemoveMembers && (
                         <form action={removeMemberAction.bind(null, member.id)}>
                           <Button
