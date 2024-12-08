@@ -13,7 +13,7 @@ export async function getOrganizations() {
   const result = await api
     .get('organizations', {
       next: {
-        tags: ['organization'],
+        tags: ['organizations'],
       },
     })
     .json<GetOrganizationsResponse>()
